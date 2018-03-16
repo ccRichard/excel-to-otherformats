@@ -36,8 +36,8 @@ class Xlsx(object):
         """ 将转换后的文本信息写到log文件 """
         with open(self.outfile, "w", encoding="utf-8") as wf:
             wf.write(self.text)
-        print(self.text)
         print("text output to file:{}".format(self.outfile))
+        return self.text
 
 
 class XlsxToWiki(Xlsx):
@@ -58,7 +58,11 @@ class XlsxToWiki(Xlsx):
                     if row == 0:
                         self.text = "{}|_.{}".format(self.text, self.table.cell_value(row, col))
                     else:
-                        self.text = "{}|{}".format(self.text, self.table.cell_value(row, col))
+                        # col为0表示第一列要居中显示
+                        if col == 0:
+                            self.text = "{}|_.{}".format(self.text, self.table.cell_value(row, col))
+                        else:
+                            self.text = "{}|{}".format(self.text, self.table.cell_value(row, col))
                 else:
                     nr = posts[1] - posts[0]
                     nc = posts[3] - posts[2]
